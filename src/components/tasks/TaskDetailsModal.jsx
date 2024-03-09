@@ -1,10 +1,12 @@
-import { ArrowRightIcon, TrashIcon } from '@heroicons/react/24/outline';
-import { useDispatch } from 'react-redux';
-import { removeTask, updateStatus } from '../../Redux/Fearures/Tasks/taskSlice';
-const TaskCard = ({task}) => {
-  const dispatch = useDispatch()
+import PropTypes from "prop-types";
+import Modal from "../Modal/Modal";
+import { useDispatch } from "react-redux";
+import { removeTask, updateStatus } from "../../Redux/Fearures/Tasks/taskSlice";
+import { ArrowRightIcon, TrashIcon } from "@heroicons/react/24/outline";
 
-let updatedStatus ;
+const TaskDetailsModal = ({ isOpen, setIsOpen,item:task }) => {
+  const dispatch = useDispatch()
+  let updatedStatus ;
 if(task.status === 'pending') {
   updatedStatus = 'on-going'
 }else if(task.status === 'on-going') {
@@ -12,9 +14,9 @@ if(task.status === 'pending') {
 } else if(task.status === 'completed') {
   updatedStatus = 'archive'
 }
-
   return (
-    <div className="bg-secondary/10 rounded-md p-5">
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen} title={"Task Details"}>
+      <div className="bg-secondary/10 rounded-md p-5">
       <h1
         className={`text-lg font-semibold mb-3  ${
           task?.priority === 'high' ? 'text-red-500' : ''
@@ -40,7 +42,13 @@ if(task.status === 'pending') {
         </div>
       </div>
     </div>
+    </Modal>
   );
 };
 
-export default TaskCard;
+TaskDetailsModal.propTypes = {
+  isOpen: PropTypes.bool,
+  setIsOpen: PropTypes.func,
+};
+
+export default TaskDetailsModal;
